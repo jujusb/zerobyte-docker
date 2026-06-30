@@ -1,0 +1,50 @@
+name: zerobyte
+services:
+  zerobyte:
+    cap_add:
+      - SYS_ADMIN
+    cpu_shares: 90
+    command: []
+    container_name: zerobyte
+    deploy:
+      resources:
+        limits:
+          memory: '8224227328'
+        reservations:
+          devices: []
+    devices:
+      - /dev/fuse:/dev/fuse
+    environment:
+      - APP_SECRET=${ZEROBYTE_APP_SECRET}
+      - BASE_URL=${ZEROBYTE_BASE_URL}
+      - TZ=${ZEROBYTE_TZ}
+    image: ghcr.io/nicotsx/zerobyte:v0.40
+    labels:
+      icon: https://zerobyte.app/zerobyte.png
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /etc/localtime
+        target: /etc/localtime
+      - type: bind
+        source: ${BASE_DATA_PATH:-./data}
+        target: /var/lib/zerobyte/AppData
+      - type: bind
+        source: ${BASE_DATA_PATH:-./data}/zerobyte/data
+        target: /var/lib/zerobyte/data
+      - type: bind
+        source: ${BASE_DATA_PATH:-./data}/zerobyte/restic
+        target: /var/lib/zerobyte/restic
+      - type: bind
+        source: ${BASE_DATA_PATH:-./data}/zerobyte/repositories
+        target: /var/lib/zerobyte/repositories
+      - type: bind
+        source: ${BASE_DATA_PATH:-./data}/rclone-manager/config
+        target: /root/.config/rclone
+    networks:
+      caddy_net:
+    privileged: false
+
+networks:
+  caddy_net:
+    external: true
