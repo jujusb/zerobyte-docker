@@ -36,7 +36,7 @@ services:
         source: ${BASE_DATA_PATH:-./data}/zerobyte/restic
         target: /var/lib/zerobyte/restic
       - type: bind
-        source: ${BASE_DATA_PATH:-./data}/zerobyte/repositories
+        source: ${BACKUP_DATA_PATH:-./backups}
         target: /var/lib/zerobyte/repositories
       - type: bind
         source: ${BASE_DATA_PATH:-./data}/rclone-manager/config
